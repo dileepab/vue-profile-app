@@ -1,7 +1,7 @@
 <template>
   <div class="profile-container">
     <header class="content-header">
-      <h1>My <strong>Profile</strong></h1>
+      <h1><span v-if="!isEditable">My</span><span v-if="isEditable">Edit</span> <strong>Profile</strong></h1>
       <div class="header-separator"></div>
       <router-link
           v-if="!isEditable" to="/profile/edit" class="edit-link">
@@ -9,7 +9,7 @@
       </router-link>
       <router-link
           v-if="isEditable" to="/profile" class="edit-link">
-        <i class="pi pi-backward"></i> Cancel
+        <i class="pi pi-backward"></i> Back to My Profile
       </router-link>
     </header>
 

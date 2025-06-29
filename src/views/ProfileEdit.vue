@@ -6,9 +6,9 @@
       <div v-if="initialData" class="profile-content-wrapper">
         <!-- Basic Details Form -->
         <div v-show="activeTabId === 'basic'" class="content-area">
-          <Form @submit="handleUpdate" :initial-values="{ basic: initialData.basic }" :validation-schema="basicSchema" v-slot="{ meta }">
+          <Form @submit="handleUpdate" :initial-values="{ basic: initialData.basic }" :validation-schema="basicSchema" v-slot="{ errors, meta }">
             <div class="basic-details-grid">
-              <!-- USE THE NEW COMPONENT HERE -->
+              <!-- Use the reusable ProfileAvatar component -->
               <ProfileAvatar
                   :isEditable="true"
                   :imageUrl="initialData.basic.profileImage"
@@ -20,24 +20,31 @@
                   <Field name="basic.salutation" v-slot="{ value, handleChange }">
                     <Select :model-value="value" @update:modelValue="handleChange" :options="['Mr.', 'Ms.', 'Mrs.']" />
                   </Field>
+                  <small v-if="errors['basic.salutation']" class="p-error">{{ errors['basic.salutation'] }}</small>
                 </div>
                 <div class="input-group">
                   <label>First name*</label>
                   <Field name="basic.firstName" v-slot="{ field }"><InputText v-bind="field" /></Field>
+                  <small v-if="errors['basic.firstName']" class="p-error">{{ errors['basic.firstName'] }}</small>
                 </div>
                 <div class="input-group">
                   <label>Last name*</label>
                   <Field name="basic.lastName" v-slot="{ field }"><InputText v-bind="field" /></Field>
+                  <small v-if="errors['basic.lastName']" class="p-error">{{ errors['basic.lastName'] }}</small>
                 </div>
                 <div class="input-group">
                   <label>Email address*</label>
                   <Field name="basic.email" v-slot="{ field }"><InputText v-bind="field" /></Field>
+                  <small v-if="errors['basic.email']" class="p-error">{{ errors['basic.email'] }}</small>
                 </div>
+
+                <footer class="form-actions-inline">
+                  <Button type="submit" label="SAVE & UPDATE" class="save-button" :disabled="!meta.valid" />
+                  <Button type="button" label="CANCEL" class="cancel-button" @click="$router.push('/profile')" />
+                </footer>
+                <small class="mandatory-fields">* Mandatory Fields</small>
               </div>
             </div>
-            <footer class="form-actions-inline">
-              <Button type="submit" label="SAVE & UPDATE" class="save-button" :disabled="!meta.valid" />
-            </footer>
           </Form>
         </div>
 
@@ -48,44 +55,52 @@
               <div class="input-group">
                 <label>Home address*</label>
                 <Field name="additional.homeAddress" v-slot="{ field }"><InputText v-bind="field" /></Field>
+                <small v-if="errors['additional.homeAddress']" class="p-error">{{ errors['additional.homeAddress'] }}</small>
               </div>
               <div class="input-group">
                 <label>Country*</label>
                 <Field name="additional.country" v-slot="{ field }"><InputText v-bind="field" /></Field>
+                <small v-if="errors['additional.country']" class="p-error">{{ errors['additional.country'] }}</small>
               </div>
               <div class="input-group">
                 <label>Postal code*</label>
                 <Field name="additional.postalCode" v-slot="{ field }"><InputText v-bind="field" /></Field>
+                <small v-if="errors['additional.postalCode']" class="p-error">{{ errors['additional.postalCode'] }}</small>
               </div>
               <div class="input-group">
                 <label>Date of Birth*</label>
                 <Field name="additional.dob" v-slot="{ value, handleChange }">
                   <DatePicker :model-value="value" @update:modelValue="handleChange" dateFormat="yy-mm-dd" :class="{ 'p-invalid': errors['additional.dob'] }" />
                 </Field>
-                <small v-if="errors['additional.dob']" class="p-error">{{ errors['additional.dob'] || '&nbsp;' }}</small>
+                <small v-if="errors['additional.dob']" class="p-error">{{ errors['additional.dob'] }}</small>
               </div>
               <div class="input-group">
                 <label>Gender</label>
                 <Field name="additional.gender" v-slot="{ value, handleChange }">
                   <Select :model-value="value" @update:modelValue="handleChange" :options="['Male', 'Female']" />
                 </Field>
+                <small v-if="errors['additional.dob']" class="p-error">{{ errors['additional.dob'] || '&nbsp;' }}</small>
               </div>
               <div class="input-group">
                 <label>Marital Status*</label>
                 <Field name="additional.maritalStatus" v-slot="{ value, handleChange }">
                   <Select :model-value="value" @update:modelValue="handleChange" :options="['Single', 'Married']" />
                 </Field>
+                 <small v-if="errors['additional.maritalStatus']" class="p-error">{{ errors['additional.maritalStatus'] }}</small>
               </div>
             </div>
             <footer class="form-actions-inline">
               <Button type="submit" label="SAVE & UPDATE" class="save-button" :disabled="!meta.valid" />
+              <Button type="button" label="CANCEL" class="cancel-button" @click="$router.push('/profile')" />
             </footer>
+            <br/>
+            <small class="mandatory-fields">* Mandatory Fields</small>
           </Form>
         </div>
 
         <!-- Other forms would follow the same pattern -->
         <div v-show="activeTabId === 'spouse'" class="content-area">
-          <Form @submit="handleUpdate" :initial-values="{ spouse: initialData.spouse }" :validation-schema="spouseSchema" v-slot="{ meta }">
+          <Form @submit="handleUpdate" :initial-values="{ spouse: initialData.spouse }" :validation-schema="spouseSchema" v-slot="{ errors, meta }">
             <div class="edit-form-layout">
               <div class="input-group">
                 <label>Salutation</label>
@@ -104,13 +119,14 @@
             </div>
             <footer class="form-actions-inline">
               <Button type="submit" label="SAVE & UPDATE" class="save-button" :disabled="!meta.valid" />
+              <Button type="button" label="CANCEL" class="cancel-button" @click="$router.push('/profile')" />
             </footer>
           </Form>
         </div>
 
         <!-- Personal Preferences Form -->
         <div v-show="activeTabId === 'personal'" class="content-area">
-          <Form @submit="handleUpdate" :initial-values="{ personal: initialData.personal }" :validation-schema="personalSchema" v-slot="{ meta }">
+          <Form @submit="handleUpdate" :initial-values="{ personal: initialData.personal }" :validation-schema="personalSchema" v-slot="{ errors, meta }">
             <div class="edit-form-layout">
               <div class="input-group">
                 <label>Hobbies and interests</label>
@@ -131,6 +147,7 @@
             </div>
             <footer class="form-actions-inline">
               <Button type="submit" label="SAVE & UPDATE" class="save-button" :disabled="!meta.valid" />
+              <Button type="button" label="CANCEL" class="cancel-button" @click="$router.push('/profile')" />
             </footer>
           </Form>
         </div>
@@ -151,46 +168,59 @@ import { fetchUserProfile, updateUserProfile } from '../services/api';
 
 // Reusable Components
 import ProfileLayout from '../layouts/ProfileLayout.vue';
+import ProfileAvatar from '../components/ProfileAvatar.vue';
+
+// PrimeVue Components
 import Button from 'primevue/button';
 import Select from 'primevue/select';
 import InputText from 'primevue/inputtext';
 import DatePicker from 'primevue/datepicker';
-import ProfileAvatar from "@/components/ProfileAvatar.vue";
-
 
 const router = useRouter();
 const emit = defineEmits(['show-message']);
 const initialData = ref(null);
-const fileInput = ref(null);
-const imagePreview = ref(null);
+const selectedFile = ref(null);
 
 // Schemas for each form
 const basicSchema = yup.object({
   basic: yup.object({
-    salutation: yup.string().required(),
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
-    email: yup.string().required().email(),
+    salutation: yup.string().required('Salutation is required'),
+    firstName: yup.string().required('First name is required'),
+    lastName: yup.string().required('Last name is required'),
+    email: yup.string().required('Email is required').email('Must be a valid email'),
   })
 });
 const additionalSchema = yup.object({
   additional: yup.object({
-    homeAddress: yup.string().required(),
-    country: yup.string().required(),
-    postalCode: yup.string().required(),
-    dob: yup.date().required().max(new Date(Date.now() - 536112000000), "You must be at least 17 years old"),
+    homeAddress: yup.string().required('Home address is required'),
+    country: yup.string().required('Country is required'),
+    postalCode: yup.string().required('Postal code is required'),
+    dob: yup.date().required('Date of birth is required').max(new Date(Date.now() - 536112000000), "You must be at least 17 years old"),
     gender: yup.string(),
-    maritalStatus: yup.string().required()
+    maritalStatus: yup.string().required('Marital status is required')
+  })
+});
+// Add missing schemas
+const spouseSchema = yup.object({
+  spouse: yup.object({
+    salutation: yup.string(),
+    firstName: yup.string(),
+    lastName: yup.string(),
+  })
+});
+const personalSchema = yup.object({
+  personal: yup.object({
+     hobbies: yup.string(),
+     sports: yup.string(),
+     music: yup.string(),
+     movies: yup.string(),
   })
 });
 
-const triggerFileUpload = () => fileInput.value.click();
-
-const onFileSelect = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    imagePreview.value = URL.createObjectURL(file);
-  }
+// Function to handle the image file emitted from the child component
+const handleImageSelected = (file) => {
+    console.log('Image selected in parent:', file);
+    selectedFile.value = file;
 };
 
 onMounted(async () => {
@@ -200,8 +230,17 @@ onMounted(async () => {
 const handleUpdate = async (values) => {
   try {
     const fullData = JSON.parse(JSON.stringify(initialData.value));
-    Object.assign(fullData.basic, values.basic);
-    Object.assign(fullData.additional, values.additional);
+
+    // Merge the updated data from the submitted form
+    if(values.basic) Object.assign(fullData.basic, values.basic);
+    if(values.additional) Object.assign(fullData.additional, values.additional);
+    if(values.spouse) Object.assign(fullData.spouse, values.spouse);
+    if(values.personal) Object.assign(fullData.personal, values.personal);
+
+    if (selectedFile.value) {
+        console.log('Uploading new image...');
+        // In a real app, you would handle the actual upload here.
+    }
 
     await updateUserProfile(fullData);
     initialData.value = fullData;
@@ -248,7 +287,7 @@ const handleUpdate = async (values) => {
   background-color: #212529 !important;
   border: 1px solid #212529 !important;
   color: white !important;
-  min-width: 150px;
+  min-width: calc(200px - 0.5rem);
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   margin-left: 0; /* Changed to left-align the button */
@@ -268,16 +307,54 @@ const handleUpdate = async (values) => {
   cursor: not-allowed;
 }
 
+.cancel-button {
+  background-color: transparent !important;
+  border: 1px solid #000 !important;
+  color: #000 !important;
+  min-width: calc(200px - 0.5rem);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-left: 0;
+  display: block;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.cancel-button:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.05) !important; /* subtle hover effect */
+  border-color: #000 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.cancel-button:disabled {
+  color: #999 !important;
+  border-color: #ccc !important;
+  cursor: not-allowed;
+  background-color: transparent !important;
+}
+
+.p-error {
+  height: 1em;
+  color: #cd0202;
+}
+
+.mandatory-fields {
+  height: 1em;
+  color: #151515;
+}
+
+
 @media (max-width: 768px) {
   .basic-details-grid {
     grid-template-columns: 1fr;
   }
-  .save-button {
+  .save-button, .cancel-button {
     grid-column: 1 / -1; /* Make button span the full width */
     margin-top: 1rem;
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
-    min-width: 100%;
+    min-width: calc(50% - 0.5rem);
   }
 }
 </style>
