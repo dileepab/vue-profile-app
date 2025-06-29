@@ -162,6 +162,7 @@ onMounted(async () => {
 }
 .nav-button.active {
   font-weight: bold;
+  border-bottom-width: 3px;
 }
 .nav-button:hover {
   color: black;

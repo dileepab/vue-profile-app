@@ -183,6 +183,13 @@ const handleLogin = async (values) => {
   transition: background-color 0.2s; /* Added for smooth transition */
 }
 
+.login-button:hover:not(:disabled) {
+  background-color: #343a40 !important; /* Slightly lighter */
+  border-color: #343a40 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
 .login-button:disabled {
     background-color: #373c40 !important;
   border: 1px solid #373c40 !important;
