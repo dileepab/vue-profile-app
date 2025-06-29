@@ -68,7 +68,10 @@ const handleShowMessage = ({ message, type = 'error' }) => {
 
 const handleLogout = () => {
     sidebarVisible.value = false;
+    // Clear all forms of session persistence
     localStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('isLoggedIn');
+    document.cookie = "isLoggedIn=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     router.push('/login');
 };
 
@@ -177,7 +180,7 @@ body, html {
     padding: 1rem;
     font-size: 18px;
     font-weight: 300;
-    color: #373737;
+    color: #000000;
     cursor: pointer;
     transition: color 0.2s;
 }
@@ -186,7 +189,7 @@ body, html {
 }
 .nav-link.router-link-active {
     font-weight: bold;
-    color: black;
+  border-bottom: 3px solid black;
 }
 
 .global-banner {
@@ -210,10 +213,6 @@ body, html {
 
 .global-success-banner {
     background-color: #004e11;
-}
-
-.p-drawer.p-sidebar-md{
-  background: var(--p-tabs-tabpanel-color);
 }
 
 @media (max-width: 768px) {

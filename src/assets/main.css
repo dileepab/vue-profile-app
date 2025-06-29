@@ -1,16 +1,10 @@
 /* General Styles & Resets */
 :root {
-  --primary-color: #007bff;
-  --primary-hover: #0056b3;
-  --light-gray: #f7f7f7;
-  --medium-gray: #e9ecef;
-  --dark-gray: #6c757d;
+  /* Kept essential color variables */
   --text-color: #212529;
-  --p-tabs-tabpanel-color: #ffffff;
   --error-color: #dc3545;
   --white: #ffffff;
-  --border-radius: 4px;
-  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --p-drawer-background: #ffffff !important;
 }
 
 * {
@@ -19,99 +13,49 @@
   padding: 0;
 }
 
-body {
-  font-family: 'Inter', sans-serif; /* You'll need to link this font in your index.html */
-  background-color: var(--light-gray);
+body, html {
+  font-family: 'Inter', sans-serif; /* Assumes Inter font is linked in index.html */
+  background-color: #f7f7f7; /* Fallback background */
   color: var(--text-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  height: 100%;
+  width: 100%;
 }
 
 #app {
   width: 100%;
+  height: 100%;
 }
 
-/* Card Styles */
-.card {
-  background-color: var(--white);
-  padding: 2rem 2.5rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+/* --- Unwanted styles like .card, .btn, .form-grid have been removed --- */
+
+
+/* --- Global Form Component Styles --- */
+/* Centralized styles for PrimeVue inputs, moved from individual components */
+.p-inputtext,
+.p-select,
+.p-datepicker .p-inputtext {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  color: black !important;
+  border-radius: 0.25rem;
+  width: 100%;
+  max-width: 400px;
+}
+.p-password{
   width: 100%;
 }
 
-/* Form Elements */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-.input-group {
-  display: flex;
-  flex-direction: column;
-}
-.input-group label {
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  font-size: 0.9rem;
-}
-.input-group input, .input-group select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: var(--border-radius);
-  font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.input-group input:focus, .input-group select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-}
-.input-error-message {
-  color: var(--error-color);
-  font-size: 0.8rem;
-  margin-top: 0.25rem;
-  height: 1em;
+/* Ensure selected text in Select component is black */
+.p-select .p-select-label {
+  color: black !important;
 }
 
-/* Buttons */
-.btn {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: background-color 0.2s, transform 0.1s;
-}
-.btn:active {
-  transform: translateY(1px);
-}
-.btn-primary {
-  background-color: var(--primary-color);
-  color: var(--white);
-}
-.btn-primary:hover {
-  background-color: var(--primary-hover);
-}
-.btn-primary:disabled {
-  background-color: #a0c3e6;
-  cursor: not-allowed;
-}
-.btn-secondary {
-  background-color: var(--dark-gray);
-  color: var(--white);
-}
-.btn-secondary:hover {
-  background-color: #5a6268;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .card {
-    padding: 1.5rem;
-  }
+/* Override browser autofill styles globally */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgba(0, 0, 0, 0.05) inset !important;
+  -webkit-text-fill-color: black !important;
+  transition: background-color 5000s ease-in-out 0s;
 }

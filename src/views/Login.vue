@@ -55,7 +55,7 @@ import Password from 'primevue/password';
 import Checkbox from 'primevue/checkbox';
 
 const router = useRouter();
-const emit = defineEmits(['show-message']); // Changed from 'auth-error'
+const emit = defineEmits(['show-message']);
 
 const schema = yup.object({
   userId: yup.string().required(),
@@ -66,15 +66,28 @@ const schema = yup.object({
 const handleLogin = async (values) => {
   try {
     await loginUser(values.userId, values.password);
-    localStorage.setItem('isLoggedIn', 'true');
-    // Emit success message
+
+    if (values.keepLoggedIn) {
+      // Set a persistent 1-year cookie
+      const date = new Date();
+      date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
+      const expires = "expires=" + date.toUTCString();
+      document.cookie = `isLoggedIn=true; expires=${expires}; path=/`;
+      sessionStorage.removeItem('isLoggedIn'); // Clear any session storage
+    } else {
+      // Use sessionStorage for the current browser session only
+      sessionStorage.setItem('isLoggedIn', 'true');
+       // Ensure any persistent cookie is removed if the user unchecks the box
+      document.cookie = "isLoggedIn=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+
     emit('show-message', { message: 'Login successful! Redirecting...', type: 'success' });
-    // Redirect after a short delay
+
     setTimeout(() => {
         router.push('/profile');
     }, 1500);
+
   } catch (error) {
-    // Emit error message with the correct event name and payload structure
     emit('show-message', { message: error.message, type: 'error' });
   }
 };
@@ -213,14 +226,6 @@ const handleLogin = async (values) => {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
     min-width: 100%;
-  }
-
-  /* Increase input height on mobile */
-  :deep(.p-inputtext),
-  :deep(.p-password-input) {
-    padding-top: 0.85rem;
-    padding-bottom: 0.85rem;
-    font-size: 16px; /* Ensure readable font size */
   }
 }
 </style>

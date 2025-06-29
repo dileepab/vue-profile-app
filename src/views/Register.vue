@@ -150,20 +150,6 @@ const handleRegister = async (values) => {
     min-height: 1.25em;
 }
 
-
-:deep(.p-inputtext),
-:deep(.p-password-input) {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  color: black;
-  width: 100%;
-  border-radius: 0.25rem;
-}
-
-:deep(.p-password) {
-    width: 100%;
-}
-
 :deep(input:-webkit-autofill),
 :deep(input:-webkit-autofill:hover),
 :deep(input:-webkit-autofill:focus),
