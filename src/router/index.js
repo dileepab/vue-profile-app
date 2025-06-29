@@ -7,8 +7,8 @@ function getCookie(name) {
   const ca = document.cookie.split(';');
   for(let i=0; i < ca.length; i++) {
     let c = ca[i];
-    while (c.charAt(0)==' ') c = c.substring(1,c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    while (c.charAt(0)===' ') c = c.substring(1,c.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
   }
   return null;
 }
@@ -16,7 +16,7 @@ function getCookie(name) {
 
 // Updated function to check for authentication state
 const isAuthenticated = () => {
-  // 1. Check for the persistent cookie using the helper function
+  // 1. Check for the persistent cookie
   const hasCookie = getCookie("isLoggedIn") === "true";
   // 2. Fallback to check sessionStorage for the current browser session
   const hasSessionStorage = sessionStorage.getItem('isLoggedIn') === 'true';
@@ -44,10 +44,10 @@ const router = createRouter({
       meta: { isGuest: true }
     },
     {
-        path: '/home',
-        name: 'Home',
-        component: () => import('../views/Home.vue'),
-        meta: { requiresAuth: true }
+      path: '/home',
+      name: 'Home',
+      component: () => import('../views/Home.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/profile',
@@ -60,9 +60,24 @@ const router = createRouter({
       name: 'EditProfile',
       component: () => import('../views/ProfileEdit.vue'),
       meta: { requiresAuth: true }
+    },
+    // Add a catch-all route to handle the 404 redirect
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: Login // Or a dedicated "Not Found" component
     }
   ],
 });
+
+// This code block handles the redirect from the 404.html page
+if (sessionStorage.redirect) {
+  const redirect = sessionStorage.redirect;
+  delete sessionStorage.redirect;
+  // Use router.replace to go to the intended URL
+  router.replace(redirect);
+}
+
 
 // Navigation Guard
 router.beforeEach((to, from, next) => {
