@@ -1,1 +1,0 @@
-import{_ as t,d as a,e as o,o as s}from"./index-CYKfyxs8.js";const n={class:"home-container"},r={__name:"Home",setup(c){return(_,e)=>(s(),a("div",n,e[0]||(e[0]=[o("h2",null,"Home Page",-1),o("p",null,"This is a placeholder for the home page content.",-1)])))}},p=t(r,[["__scopeId","data-v-9b6adb13"]]);export{p as default};
