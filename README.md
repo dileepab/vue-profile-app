@@ -79,6 +79,15 @@ npm run deploy
 
 ---
 
+## Test Credentials
+
+You can use the following credentials to log in and test the application:
+
+* **User ID:** `testuser`
+* **Password:** `password`
+
+---
+
 ## Project Structure
 
 The source code is organized into the following main directories:
